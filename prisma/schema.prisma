@@ -11,23 +11,26 @@ datasource db {
 }
 
 model Usuario {
-  id         Int         @id @default(autoincrement())
-  nome       String
-  usuario    String
-  senha      String
-  pendencias Pendencia[]
+  id                   Int         @id @default(autoincrement())
+  nome                 String      @db.Text
+  usuario              String      @db.Text
+  senha                String      @db.Text
+  responsavelPendencia Pendencia[] @relation("responsavelPendencia")
+  autorPendencia       Pendencia[] @relation("autorPendencia")
 
   @@map("usuarios")
 }
 
 model Pendencia {
   id            Int      @id @default(autoincrement())
-  descricao     String
-  prazo         String
+  descricao     String   @db.Text
+  prazo         String   @db.Text
   data          DateTime @db.Date
   horario       DateTime @db.Time()
   responsavelId Int
-  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
+  responsavel   Usuario  @relation(name: "responsavelPendencia", fields: [responsavelId], references: [id])
+  autorId       Int
+  autor         Usuario  @relation(name: "autorPendencia", fields: [autorId], references: [id])
 
   @@map("pendencias")
 }

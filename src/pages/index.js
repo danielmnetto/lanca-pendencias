@@ -20,7 +20,7 @@ export default function Home() {
    * Envia o formulário para API de login
    */
   async function submitLoginForm () {
-    const request = await fetch('/api/login', {
+    const request = await fetch('/api/session/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -1,4 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next'
+import { prismaClient } from '../../components/database/prismaClient';
+import bcrypt from 'bcrypt'
 
 /**
  * API que busca a informação de todos os usuários exceto informações confidenciais.
@@ -7,13 +9,28 @@ import {NextApiRequest, NextApiResponse} from 'next'
  * @param {NextApiRequest} req Request
  * @param {NextApiResponse} res Response
  */
-export default function getUsuarios(req, res) {
-  if (req.method !== 'GET') {
-    return res.sendStatus(500).end()
+export default async function (req, res) {
+  try {
+    if (req.method === 'GET') {
+      const usuarioQuery = await prismaClient.usuario.findMany({ 
+        select: { nome: true, usuario: true }
+      })
+      return res.status(200).json(usuarioQuery)
+
+    } else if (req.method === 'POST') {
+      if (!req.body) return res.status(400).json(null)
+
+      const { nome, usuario, senha } = req.body
+      const saltRounds = 10;
+      const senhaCripto = await bcrypt.hash(senha, saltRounds) 
+      await prismaClient.usuario.create({
+        data: { nome, usuario, senha: senhaCripto }
+      })
+      return res.status(201).json(null)
+    } else {
+      return res.status(405).json(null)
+    }
+  } catch (e) {
+    return res.status(500).json(null)
   }
-
-
-  return res.status(200).json([
-    {id: 1, name: 'Daniel', user: 'daniel', password: '123'}
-  ]).end()
 }
