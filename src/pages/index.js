@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../styles/Home.module.css'
 import jsCookie from 'js-cookie'
+import Title from '../components/Title'
 import { useRouter } from 'next/router'
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
   const [errMessage, setErrMessage] = React.useState('')
 
   function goToHomePage () {
-    router.push('/')
+    router.push('/home')
   }
 
   /**
@@ -42,10 +42,10 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
-      <div> 
-        <h1>Login</h1>
-      </div>
+    <div className='container'>
+      <Title>
+        Acesse sua conta
+      </Title>
 
       <form autoComplete='off' action='/api/login' method='post'>
         <label htmlFor='user'>Usuário</label>
@@ -67,7 +67,7 @@ export default function Home() {
         <input 
           type='button' 
           value='Acessar' 
-          onClick={submitLoginForm} 
+          onClick={() => submitLoginForm()} 
         />
       </form>
     </div>

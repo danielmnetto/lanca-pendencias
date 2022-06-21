@@ -7,12 +7,12 @@ import {NextApiRequest, NextApiResponse} from 'next'
  * @param {NextApiRequest} req Request
  * @param {NextApiResponse} res Response
  */
-export default function getUsuarios(req, res) {
+export default function getPendencias(req, res) {
   if (req.method !== 'GET') {
     return res.sendStatus(500).end()
   }
 
   return res.status(200).json([
-    {id, name: 'Daniel', user: 'daniel', password: '123'}
+    { id: 1, descricao: 'Arrumar o front-end', prazo: '10 dias', data: '15/10/2021', horario: '10:00', responsavel: 'Daniel' }
   ]).end()
 }

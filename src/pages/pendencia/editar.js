@@ -34,7 +34,7 @@ export default function NovaPendencia () {
   }
 
   return (
-    <div>
+    <div className='container'>
         <h1>Editar pendência</h1>
 
         <h4>Pendência nº 0</h4>

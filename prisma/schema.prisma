@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id         Int         @id @default(autoincrement())
+  nome       String
+  usuario    String
+  senha      String
+  pendencias Pendencia[]
+
+  @@map("usuarios")
+}
+
+model Pendencia {
+  id            Int      @id @default(autoincrement())
+  descricao     String
+  prazo         String
+  data          DateTime @db.Date
+  horario       DateTime @db.Time()
+  responsavelId Int
+  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
+
+  @@map("pendencias")
+}

@@ -1,4 +1,5 @@
 import React from 'react'
+import Title from '../../components/Title'
 
 export default function NovaPendencia () {
 
@@ -33,9 +34,11 @@ export default function NovaPendencia () {
   }
 
   return (
-    <div>
+    <div className='container'>
       <div>
-        <h1>Nova pendência</h1>
+        <Title>
+          Nova Pendência
+        </Title>
 
         <form className='form'>
           <label htmlFor='p-descricao'>Descrição</label>
