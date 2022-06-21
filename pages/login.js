@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from '../styles/Home.module.css'
+import jsCookie from 'js-cookie'
 import { useRouter } from 'next/router'
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
   const [errMessage, setErrMessage] = React.useState('')
 
   function goToHomePage () {
-    router.push('/home')
+    router.push('/')
   }
 
   /**
@@ -29,10 +30,14 @@ export default function Home() {
       })
     })
 
+    const { status } = request
     const response = request.json()
 
-    if (response) {
+    if (status === 200) {
+      jsCookie.set('token', response.token)
       goToHomePage()
+    } else {
+      alert('Ocorreu um erro. Tente novamente mais tarde!')
     }
   }
 

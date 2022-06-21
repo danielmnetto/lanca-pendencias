@@ -38,60 +38,60 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div className="body">
-        <input 
-          type='button' 
-          className='add'
-          value='Nova pendência'
-          onClick={() => goToNovaPendencia()} 
-        />
-        <div className="listaPendencias">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Descrição</th>
-                <th>Prazo</th>
-                <th>Data</th>
-                <th>Horário</th>
-                <th>Responsável</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <input 
-                    className="edit" 
-                    type='button' 
-                    value='Detalhes' 
-                    onClick={() => goToPendencia(1)} 
-                    />
-                  <input 
-                    className="edit" 
-                    type='button' 
-                    value='Editar' 
-                    onClick={() => editPendencia()} 
-                    />
-                  <input 
-                    className="delete" 
-                    type='button' 
-                    value='Excluir' 
-                    onClick={() => deletePedencia(1)} 
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <div className="body">
+      <div className="listaPendencias">
+        <div>
+          <input 
+            type='button' 
+            className='home-add'
+            value='Nova pendência'
+            onClick={() => goToNovaPendencia()} 
+          />
         </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Prazo</th>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Responsável</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <input 
+                  className="details" 
+                  type='button' 
+                  value='Detalhes' 
+                  onClick={() => goToPendencia(1)} 
+                  />
+                <input 
+                  className="edit" 
+                  type='button' 
+                  value='Editar' 
+                  onClick={() => editPendencia()} 
+                  />
+                <input 
+                  className="delete" 
+                  type='button' 
+                  value='Excluir' 
+                  onClick={() => deletePedencia(1)} 
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   )

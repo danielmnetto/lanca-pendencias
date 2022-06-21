@@ -1,6 +1,5 @@
 import * as jwt from "jsonwebtoken"
-import * as cookie from 'js-cookie'
-
+import jsCookie from 'js-cookie'
 const JWT_KEY = ".Yv+XT7/2[WkLK6zt&Gb"
 
 /**
@@ -14,7 +13,8 @@ export default function (req, res) {
 
   const { username, password } = req.body
 
-  cookie.set('token', jwt.sign({ username, password }, JWT_KEY, { expiresIn: '1h' }))
+  const token = jwt.sign({ username }, JWT_KEY, { expiresIn: '1h' })
 
-  res.sendStatus(200)
+  jsCookie.set('token', token)
+  return res.status(200).json({token})
 }

@@ -9,6 +9,19 @@ div.d-field {
   border-radius: 10px;
 }
 
+div.listaPendencias {
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: yellowgreen;
+}
+
+input.home-add {
+  margin: 20px 0;
+}
+
 p.d-label {
   font-size: 16;
   text-align: left;
@@ -52,7 +65,7 @@ table, th, td {
 }
 
 th, td {
-  padding: 2px 5px;
+  padding: 8px 10px;
 }
 
 input[type=button] {
@@ -61,6 +74,17 @@ input[type=button] {
   border-radius: 3px;
 }
 
+input[type=button].home-add {
+  margin: 10px 5px;
+  border: 2px solid #38761d;
+  background-color: #6aa84f;
+  color: #fff;
+}
+input[type=button].details {
+  border: 2px solid #741b47;
+  background-color: #a64d79;
+  color: #fff;
+}
 input[type=button].add {
   border: 2px solid #38761d;
   background-color: #6aa84f;

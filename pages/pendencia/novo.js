@@ -29,7 +29,6 @@ export default function NovaPendencia () {
       alert('Sucesso!')
     } else {
       alert('Algo deu errado!' + response)
-
     }
   }
 
