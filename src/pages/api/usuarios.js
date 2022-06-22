@@ -13,7 +13,7 @@ export default async function (req, res) {
   try {
     if (req.method === 'GET') {
       const usuarioQuery = await prismaClient.usuario.findMany({ 
-        select: { nome: true, usuario: true }
+        select: { id: true, nome: true, usuario: true }
       })
       return res.status(200).json(usuarioQuery)
 
@@ -31,6 +31,7 @@ export default async function (req, res) {
       return res.status(405).json(null)
     }
   } catch (e) {
-    return res.status(500).json(null)
+    console.log(e.message)
+    return res.status(500).json(e.message)
   }
 }

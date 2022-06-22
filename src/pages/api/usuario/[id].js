@@ -18,6 +18,7 @@ import { prismaClient } from '../../../components/database/prismaClient'
     const usuarioQuery = await prismaClient.usuario.findFirst({
       where: { id: Number.parseInt(id) },
       select: { 
+        id: true,
         nome: true,
         usuario: true
       }

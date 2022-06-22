@@ -1,14 +1,12 @@
 import React from "react"
+import moment from "moment"
 import { useRouter } from "next/router"
 
 export default function Home() {
 
   const route = useRouter()
 
-  const [listaPendencias, setListaPendencias] = React.useState([
-    {id: 1, descricao: 'Teste', prazo: '10 dias', data: '12/10/2022', horario: '10:00', responsavel: 'Daniel'},
-    {id: 1, descricao: 'Teste', prazo: '10 dias', data: '12/10/2022', horario: '10:00', responsavel: 'Daniel'},
-  ])
+  const [listaPendencias, setListaPendencias] = React.useState([])
 
   /**
    * Exclui uma pendência
@@ -42,8 +40,40 @@ export default function Home() {
     route.push(`/pendencia/${id}`)
   }
 
+  React.useEffect(() => {
+    function loadPendencias () {
+      fetch('/api/pendencias/1', { method: 'GET' })
+      .then((res) => res.json())
+      .then((res) => {
+        try {
+          console.log(res)
+        res.forEach(pendencia => {
+          let prazo = pendencia.prazo
+          let data = pendencia.data
+          let horario = pendencia.horario
+
+          let _prazo = moment.utc(prazo).format('DD/MM/YYYY')
+          let _data = moment.utc(data).format('DD/MM/YYYY')
+          let _horario = moment.utc(horario).format('HH:mm')
+
+          pendencia.prazo = _prazo
+          pendencia.data = _data
+          pendencia.horario = _horario
+        });
+        setListaPendencias(res)
+        } catch (e) {
+          setListaPendencias([])
+          alert('Ocorreu um erro ao carregar as informações. Atualize a página mais tarde.')
+        }
+      })
+    }
+
+    loadPendencias()
+  }, [])
+
   return (
     <div className="container">
+      <h1>Olá, fulano.</h1>
       <div className="listaPendencias">
         <div className="home-add">
           <input 
@@ -67,24 +97,24 @@ export default function Home() {
           </thead>
 
           {listaPendencias.length > 0 && <tbody>
-            {listaPendencias.map((pendencia, index) => (
+            {listaPendencias.map((pendencia) => (
               <tr>
                 <td>{pendencia.id}</td>
                 <td>{pendencia.descricao}</td>
                 <td>{pendencia.prazo}</td>
                 <td>{pendencia.data}</td>
                 <td>{pendencia.horario}</td>
-                <td>{pendencia.responsavel}</td>
+                <td>{pendencia.responsavel.nome}</td>
                 <td>
                   <div className="action-buttons">
 
                   </div>
-                  <input 
+                  {/* <input 
                     className="details" 
                     type='button' 
                     value='Detalhes' 
                     onClick={() => goToPendencia(1)} 
-                    />
+                    /> */}
                   <input 
                     className="edit" 
                     type='button' 

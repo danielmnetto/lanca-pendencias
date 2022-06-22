@@ -24,7 +24,7 @@ model Usuario {
 model Pendencia {
   id            Int      @id @default(autoincrement())
   descricao     String   @db.Text
-  prazo         String   @db.Text
+  prazo         DateTime @db.Date
   data          DateTime @db.Date
   horario       DateTime @db.Time()
   responsavelId Int

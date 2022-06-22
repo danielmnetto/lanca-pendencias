@@ -1,7 +1,8 @@
+import moment from 'moment-timezone'
 import React from 'react'
 import Title from '../../components/Title'
 
-export default function NovaPendencia () {
+function NovaPendencia () {
 
   const [descricao, setDescricao] = React.useState('')
   const [prazo, setPrazo] = React.useState('')
@@ -9,29 +10,54 @@ export default function NovaPendencia () {
   const [horario, setHorario] = React.useState('')
   const [responsavel, setResponsavel] = React.useState('')
 
-  async function submitForm () {
-    const request = await fetch('/api/pendencia', {
+  const [usuarios, setUsuarios] = React.useState([])
+
+  function submitForm () {
+    console.log(descricao, prazo, data, horario, responsavel)
+
+    let message = null
+    if (!responsavel) message = "Insira um responsável."
+    if (horario === "") message = "Insira um horário."
+    if (data === "") message = "Insira uma data."
+    if (prazo === "") message = "Insira um prazo."
+    if (descricao === "") message = "Insira uma descrição."
+
+    if (message !== null) {
+      alert(message)
+      return
+    }
+
+    fetch('/api/pendencias', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         descricao,
         prazo,
         data,
         horario,
-        responsavel
+        responsavelId: Number.parseInt(responsavel),
+        autorId: Number.parseInt('1')
+      })
+    }).then((res) => {
+      if (res.status === 201) {
+        alert('Sucesso!')
+      } else {
+        alert('Deu errado!')
       }
     })
-
-    const response = request.status
-
-    if (response === 200) {
-      alert('Sucesso!')
-    } else {
-      alert('Algo deu errado!' + response)
-    }
   }
+
+  React.useEffect(() => {
+    function loadUsuarios () {
+      fetch('/api/usuarios', { method: 'GET' })
+        .then((res) => res.json())
+        .then((res) => setUsuarios(res))
+    }
+
+    loadUsuarios()
+  }, [])
 
   return (
     <div className='container'>
@@ -42,44 +68,55 @@ export default function NovaPendencia () {
 
         <form className='form'>
           <label htmlFor='p-descricao'>Descrição</label>
-          <input
-            type='text'
-            name='p-descricao'
+          <textarea 
+            required
+            name='p-descricao' 
+            rows={4}
+            cols={50}
             value={descricao}
-            onChange={(val) => setDescricao(val)}
-          />
+            onChange={(val) => setDescricao(val.target.value)}
+          ></textarea>
           <br />
           <label htmlFor='p-prazo'>Prazo</label>
           <input
-            type='text'
+            required
+            type='date'
             name='p-prazo'
             value={prazo}
-            onChange={(val) => setPrazo(val)}
+            onChange={(val) => setPrazo(val.target.value)}
           />
           <br />
           <label htmlFor='p-data'>Data</label>
           <input
+            required
             type='date'
             name='p-data'
             value={data}
-            onChange={(val) => setData(val)}
+            onChange={(val) => setData(val.target.value)}
           />
           <br />
           <label htmlFor='p-horario'>Horário</label>
           <input
+            required
             type='time'
             name='p-horario'
             value={horario}
-            onChange={(val) => setHorario(val)}
+            onChange={(val) => setHorario(val.target.value)}
           />
           <br />
-          <label htmlFor='p-responsavel'>Responsável</label>
-          <select name='p-responsavel' >
-            <option value='fulano'>Fulanos</option>
-          </select>
+
+          <label>Responsável</label>
+          {usuarios.length > 0 && <select value={responsavel} onChange={(val) => setResponsavel(val.target.value)}>
+            <option value="" disabled>Selecione um responsável...</option>
+            {usuarios.map((value, index) => (
+              <option key={value.id} value={value.id}>{value.nome}</option>
+            ))}
+          </select> || <h4>Carregando...</h4>}
+
           <br />
           <br />
           <input
+            required
             type='button'
             className='add'
             value='Criar nova pendência'
@@ -90,3 +127,5 @@ export default function NovaPendencia () {
     </div>
   )
 }
+
+export default NovaPendencia

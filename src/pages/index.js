@@ -1,42 +1,36 @@
 import React from 'react'
-import jsCookie from 'js-cookie'
 import Title from '../components/Title'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export default function Home() {
   
   const router = useRouter()
 
-  const [username, setUsername] = React.useState('')
-  const [password, setPassword] = React.useState('')
-
-  const [errMessage, setErrMessage] = React.useState('')
+  const [usuario, setUsuario] = React.useState('')
+  const [senha, setSenha] = React.useState('')
 
   function goToHomePage () {
     router.push('/home')
   }
 
-  /**
-   * Envia o formulário para API de login
-   */
-  async function submitLoginForm () {
-    const request = await fetch('/api/session/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username, password
+  function submitForm () {
+    try {
+      fetch('/api/session/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, senha })
+      }).then((res) => {
+        if (res.status === 200) {
+          goToHomePage()
+        } else if (res.status === 401) {
+          alert('Credenciais inválidas. Verifique se os campos estão corretos.')
+        } else {
+          alert('Ocorreu um erro. Tente novamente mais tarde!')
+        }
       })
-    })
 
-    const { status } = request
-    const response = request.json()
-
-    if (status === 200) {
-      jsCookie.set('token', response.token)
-      goToHomePage()
-    } else {
+    } catch (e) {
       alert('Ocorreu um erro. Tente novamente mais tarde!')
     }
   }
@@ -47,29 +41,35 @@ export default function Home() {
         Acesse sua conta
       </Title>
 
-      <form autoComplete='off' action='/api/login' method='post'>
+      <form autoComplete='off'>
         <label htmlFor='user'>Usuário</label>
         <input 
           type='text' 
           name='user' 
-          value={username} 
-          onChange={(val) => setUsername(val.target.value)} 
+          value={usuario} 
+          onChange={(val) => setUsuario(val.target.value)} 
         />
         <br />
         <label htmlFor='passwd'>Senha</label>
         <input 
           type='password' 
           name='passwd'
-          value={password} 
-          onChange={(val) => setPassword(val.target.value)} 
+          value={senha} 
+          onChange={(val) => setSenha(val.target.value)} 
         />
         <br />
         <input 
           type='button' 
           value='Acessar' 
-          onClick={() => submitLoginForm()} 
+          onClick={() => submitForm()} 
         />
       </form>
+      <br />
+      <br />
+      <Link href='/cadastrar'>
+        <a>Não tem uma conta? Cadastre-se já!</a>
+      </Link>
+
     </div>
   )
 }

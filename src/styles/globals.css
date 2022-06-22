@@ -88,9 +88,6 @@ div.d-field {
 }
 
 div.listaPendencias {
-  display: flex;
-  margin: auto;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -101,8 +98,8 @@ div.action-buttons {
 }
 
 .home-add {
-  margin: 20px 0;
-  justify-content: flex-end;
+  margin: 25px auto;
+  justify-content: center;
 }
 
 p.d-label {
@@ -148,13 +145,22 @@ input {
   width: 100%;
 }
 input:hover {
-  cursor: pointer;
+  cursor: auto;
 }
 input[type=button] {
-  display: block;
-  margin: 0 5px;
-  padding: 4px 20px;
-  border-radius: 3px;
+  cursor: pointer;
+}
+textarea,
+input {
+  padding: 10px 15px;
+  border: solid black 1px;
+  border-radius: 5px;
+  font-size: normal;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+input[type=button] {
+  text-align: center;
 }
 input[type=button].nav {
   border: none;
@@ -162,9 +168,9 @@ input[type=button].nav {
   color: #FFF;
   font-size: 18px;
   font-weight: bold;
+  
 }
 input[type=button].home-add {
-  margin: 10px 5px;
   border: 2px solid #38761d;
   background-color: #6aa84f;
   color: #fff;
@@ -174,6 +180,7 @@ input[type=button].details {
   background-color: #a64d79;
   color: #fff;
 }
+input[type=submit].add,
 input[type=button].add {
   border: 2px solid #38761d;
   background-color: #6aa84f;
