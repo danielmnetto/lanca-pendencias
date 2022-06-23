@@ -27,8 +27,8 @@ Lança Pendências é um projeto de sistema de controle de lançamento de pendê
 * Sistema de cadastro de usuários: Faça cadastros para utilizar suas credenciais no sistema.
 * Sistema de controle de pendências: visualize, armazene, modifique ou exclua registros de pendência.
 * Sistema de autenticação
-  * O sistema de login utiliza 
   * Usuários não 'logados' no sistema são redirecionados para a tela de login.
+  * O sistema de login utiliza ***JSON Web Token*** para manter a sessão do usuário no sistema.
 * Fullstack
   * A interface de usuário e as APIs gerenciados pelo lado do servidor trabalham juntos graças aos frameworks ***React*** e ***NextJS*** que disponibilizam ferramentas úteis para trabalhar com ambos os lados do sistema para as plataformas Web.
   * O banco de dados é gerenciado pela biblioteca ***Prisma*** onde todas as ações de CRUD são realizadas pelos componentes dela.
