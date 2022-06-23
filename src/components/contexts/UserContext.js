@@ -59,12 +59,20 @@ export function UserProvider({ children }) {
         },
         body: JSON.stringify({ token })
       })
-      
+
       if (req.ok) {
         const token = await req.json()
         setUsuarioId(token.id)
         setUsuarioNome(token.nome)
         setUsuarioUser(token.usuario)
+
+        if (Router.asPath === '/') {
+          Router.replace('/home')
+        }
+      } else {
+        if (Router.asPath !== '/' || Router.asPath !== '/cadastrar') {
+          Router.replace('/')
+        }
       }
     }
 

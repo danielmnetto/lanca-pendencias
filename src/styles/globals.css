@@ -151,7 +151,8 @@ input[type=button] {
   cursor: pointer;
 }
 textarea,
-input {
+input,
+select {
   padding: 10px 15px;
   border: solid black 1px;
   border-radius: 5px;
@@ -160,7 +161,7 @@ input {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 input[type=button] {
-  text-align: center;
+  justify-content: center;
 }
 input[type=button].nav {
   border: none;

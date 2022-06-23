@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prismaClient } from '../../../components/database/prismaClient'
 
@@ -46,13 +47,20 @@ export default async function (req, res) {
       await prismaClient.$disconnect()
       return res.status(200).json(pendencias)
 
-    } else if (req.method === 'PUT') {
+    } else if (req.method === 'PATCH') {
 
       const { id } = req.query
       const { descricao, prazo, data, horario, responsavelId } = req.body
 
+      const _horario = data + " " + horario
+
       await prismaClient.pendencia.update({
-        data: { descricao, prazo, data, horario, responsavelId },
+        data: { 
+          descricao, 
+          prazo: moment.utc(prazo).format(), 
+          data: moment.utc(data).format(), 
+          horario: moment.utc(_horario).format(), 
+          responsavelId: Number.parseInt(responsavelId) },
         where: { id: Number.parseInt(id) }
       })
 
@@ -74,6 +82,7 @@ export default async function (req, res) {
       return res.status(405).json(null)
     }
   } catch (e) {
+    console.log(e.message)
     return res.status(500).json(null)
   }
 }

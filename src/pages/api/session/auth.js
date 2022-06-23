@@ -39,6 +39,8 @@ export default async function Auth(req, res) {
       })
     }
 
+    await prismaClient.$disconnect()
+
     return res.status(401).json(null)
   } catch (e) {
     return res.status(500).json(null)

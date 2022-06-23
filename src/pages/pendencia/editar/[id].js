@@ -1,24 +1,33 @@
 import React from 'react'
-import Title from '../../components/Title'
+import Title from '../../../components/Title'
 import { useRouter } from 'next/router'
-import { UserContext } from '../../components/contexts/UserContext'
+import moment from 'moment'
 
-function NovaPendencia () {
+export function getServerSideProps (context) {
+  return {
+    props: {
+      pendenciaId: context.query.id
+    }
+  }
+}
+
+export default function editarPendencia (props) {
 
   const route = useRouter()
 
-  const { usuario } = React.useContext(UserContext)
-
+  const { pendenciaId } = props
   const [descricao, setDescricao] = React.useState('')
   const [prazo, setPrazo] = React.useState('')
   const [data, setData] = React.useState('')
   const [horario, setHorario] = React.useState('')
-  const [responsavel, setResponsavel] = React.useState('')
+  const [responsavelId, setResponsavel] = React.useState('')
   const [usuarios, setUsuarios] = React.useState([])
 
-  function submitForm () {
+  const [loading, setLoading] = React.useState(true)
+
+  async function submitForm () {
     let message = null
-    if (!responsavel) message = "Insira um responsável."
+    if (!responsavelId) message = "Insira um responsável."
     if (horario === "") message = "Insira um horário."
     if (data === "") message = "Insira uma data."
     if (prazo === "") message = "Insira um prazo."
@@ -29,8 +38,8 @@ function NovaPendencia () {
       return
     }
 
-    fetch('/api/pendencias', {
-      method: 'POST',
+    const req = await fetch(`/api/pendencias/${pendenciaId}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -39,34 +48,62 @@ function NovaPendencia () {
         prazo,
         data,
         horario,
-        responsavelId: Number.parseInt(responsavel),
-        autorId: Number.parseInt(usuario.id)
+        responsavelId
       })
-    }).then((res) => {
-      if (res.status === 201) {
-        alert('A pendência foi criada com sucesso.')
-        route.replace('/home')
-      } else {
-        alert('Deu errado!')
-      }
     })
+
+    if (req.ok) {
+      alert('A pendência foi alterada com sucesso.')
+      route.replace('/home')
+    } else {
+      alert('Deu errado!')
+    }
+  }
+
+  async function handleImports () {
+    async function importPendencia () {
+      const req = await fetch(`/api/pendencias/info/${pendenciaId}`, { method: 'GET' })
+      if (req.ok) {
+        const res = await req.json()
+
+        setDescricao(res.descricao)
+        setPrazo(moment.utc(res.prazo).format('YYYY-MM-DD'))
+        setData(moment.utc(res.data).format('YYYY-MM-DD'))
+        setHorario(moment.utc(res.horario).format('HH:mm'))
+        setResponsavel(res.responsavel.id)
+      }
+    }
+
+    async function importUsuarios () {
+      const req = await fetch('/api/usuarios', { method: 'GET' })
+      if (req.ok) {
+        const res = await req.json()
+        setUsuarios(res)
+      }
+    }
+
+    await importPendencia()
+    await importUsuarios()
+    setLoading(false)
   }
 
   React.useEffect(() => {
-    function loadUsuarios () {
-      fetch('/api/usuarios', { method: 'GET' })
-        .then((res) => res.json())
-        .then((res) => setUsuarios(res))
-    }
+    handleImports()
+  }, [pendenciaId])
 
-    loadUsuarios()
-  }, [])
+  if (loading) {
+    return (
+      <div className='container'>
+        <h1>Carregando informações...</h1>
+      </div>
+    )
+  }
 
   return (
     <div className='container'>
       <div>
         <Title>
-          Nova Pendência
+          Editar Pendência nº {pendenciaId}
         </Title>
 
         <form className='form'>
@@ -109,7 +146,7 @@ function NovaPendencia () {
           <br />
 
           <label>Responsável</label>
-          {usuarios.length > 0 && <select value={responsavel} onChange={(val) => setResponsavel(val.target.value)}>
+          {usuarios.length > 0 && <select value={responsavelId} onChange={(val) => setResponsavel(val.target.value)}>
             <option value="" disabled>Selecione um responsável...</option>
             {usuarios.map((value) => (
               <option key={value.id} value={value.id}>{value.nome}</option>
@@ -122,7 +159,7 @@ function NovaPendencia () {
             required
             type='button'
             className='add'
-            value='Criar nova pendência'
+            value='Salvar alterações da pendência'
             onClick={() => submitForm()}
           />
         </form>
@@ -130,5 +167,3 @@ function NovaPendencia () {
     </div>
   )
 }
-
-export default NovaPendencia

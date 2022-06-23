@@ -23,6 +23,8 @@ import { prismaClient } from '../../../components/database/prismaClient'
         usuario: true
       }
     })
+
+    await prismaClient.$disconnect()
   
     return res.status(200).json(usuarioQuery)
   } catch (e) {

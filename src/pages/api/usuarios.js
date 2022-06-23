@@ -15,8 +15,10 @@ export default async function (req, res) {
       const usuarioQuery = await prismaClient.usuario.findMany({ 
         select: { id: true, nome: true, usuario: true }
       })
-      return res.status(200).json(usuarioQuery)
 
+      await prismaClient.$disconnect()
+
+      return res.status(200).json(usuarioQuery)
     } else if (req.method === 'POST') {
       if (!req.body) return res.status(400).json(null)
 
@@ -26,6 +28,8 @@ export default async function (req, res) {
       await prismaClient.usuario.create({
         data: { nome, usuario, senha: senhaCripto }
       })
+
+      await prismaClient.$disconnect()
       return res.status(201).json(null)
     } else {
       return res.status(405).json(null)
