@@ -1,8 +1,8 @@
 import React from "react"
-import { useRouter } from "next/router"
-import { UserContext } from "../components/contexts/UserContext"
 import moment from "moment"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { UserContext } from "../components/contexts/UserContext"
 
 export default function Home() {
 
@@ -51,6 +51,10 @@ export default function Home() {
           pendencia.data = moment.utc(pendencia.data).format('DD/MM/YYYY')
           pendencia.horario = moment.utc(pendencia.horario).format('HH:mm')
         })
+
+        res.sort(function(a, b) {
+          return Number.parseInt(b.id) - Number.parseInt(a.id)
+        });
         
         setListaPendencias(res)
       }

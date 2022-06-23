@@ -82,7 +82,6 @@ export default async function (req, res) {
       return res.status(405).json(null)
     }
   } catch (e) {
-    console.log(e.message)
     return res.status(500).json(null)
   }
 }

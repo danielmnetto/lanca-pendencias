@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import Link from "next/link";
 import { useRouter } from 'next/router'
 
 export default function Nav () {

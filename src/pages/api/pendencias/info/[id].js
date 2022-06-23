@@ -41,7 +41,6 @@ export default async function (req, res) {
     await prismaClient.$disconnect()
     return res.status(200).json(pendencias)
   } catch (e) {
-    console.log(e.message)
     return res.status(500).json(null)
   }
 }

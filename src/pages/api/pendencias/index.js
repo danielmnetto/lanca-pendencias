@@ -35,7 +35,6 @@ export default async function getPendencias(req, res) {
     return res.status(201).json(null)
 
   } catch (e) {
-    console.log(e.message)
     return res.status(500).json(null)
   }
 }

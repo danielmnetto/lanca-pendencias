@@ -1,6 +1,6 @@
-import {NextApiRequest, NextApiResponse} from 'next'
-import { prismaClient } from '../../components/database/prismaClient';
 import bcrypt from 'bcrypt'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { prismaClient } from '../../components/database/prismaClient';
 
 /**
  * API que busca a informação de todos os usuários exceto informações confidenciais.
@@ -12,7 +12,7 @@ import bcrypt from 'bcrypt'
 export default async function (req, res) {
   try {
     if (req.method === 'GET') {
-      const usuarioQuery = await prismaClient.usuario.findMany({ 
+      const usuarioQuery = await prismaClient.usuario.findMany({
         select: { id: true, nome: true, usuario: true }
       })
 
@@ -24,7 +24,7 @@ export default async function (req, res) {
 
       const { nome, usuario, senha } = req.body
       const saltRounds = 10;
-      const senhaCripto = await bcrypt.hash(senha, saltRounds) 
+      const senhaCripto = await bcrypt.hash(senha, saltRounds)
       await prismaClient.usuario.create({
         data: { nome, usuario, senha: senhaCripto }
       })
@@ -35,7 +35,6 @@ export default async function (req, res) {
       return res.status(405).json(null)
     }
   } catch (e) {
-    console.log(e.message)
     return res.status(500).json(e.message)
   }
 }

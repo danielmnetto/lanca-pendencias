@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
-import Cookies from 'js-cookie'
 import { prismaClient } from "../../../components/database/prismaClient"
 import { NextApiRequest, NextApiResponse } from "next"
 

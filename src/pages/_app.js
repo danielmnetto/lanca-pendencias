@@ -1,9 +1,9 @@
 import '../styles/globals.css'
 import React from 'react'
 import Nav from '../components/Nav'
+import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { UserProvider } from '../components/contexts/UserContext'
-import Cookies from 'js-cookie'
 
 export default function MyApp({ Component, pageProps }) {
   const route = useRouter()

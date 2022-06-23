@@ -17,7 +17,6 @@ export default function Token(req, res) {
 
     jwt.verify(token, JWT_KEY, function(error, decoded) {
       if (error) {
-        console.log(error.message)
         return res.status(401).json(null)
       }
 
