@@ -3,7 +3,7 @@ import Title from '../../components/Title'
 import { useRouter } from 'next/router'
 import { UserContext } from '../../components/contexts/UserContext'
 
-function NovaPendencia () {
+export default function NovaPendencia () {
 
   const route = useRouter()
 
@@ -39,8 +39,8 @@ function NovaPendencia () {
         prazo,
         data,
         horario,
-        responsavelId: Number.parseInt(responsavel),
-        autorId: Number.parseInt(usuario.id)
+        responsavelId: responsavel,
+        autorId: usuario.id
       })
     }).then((res) => {
       if (res.status === 201) {
@@ -130,5 +130,3 @@ function NovaPendencia () {
     </div>
   )
 }
-
-export default NovaPendencia

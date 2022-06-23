@@ -15,14 +15,20 @@ export default async function getPendencias(req, res) {
     if (!req.body) return res.status(400).json(null)
 
     let { descricao, prazo, data, horario, responsavelId, autorId } = req.body
-    const _horario = data + " " + horario + ":00"
+    const _horario = data + " " + horario
     
     prazo = moment.utc(prazo).format()
     data = moment.utc(data).format()
     horario = moment.utc(_horario).format()
 
     await prismaClient.pendencia.create({
-      data: { descricao, prazo, data, horario, responsavelId, autorId }
+      data: { 
+        descricao, 
+        prazo, 
+        data, 
+        horario, 
+        responsavelId: Number.parseInt(responsavelId), 
+        autorId: Number.parseInt(autorId) }
     })
 
     await prismaClient.$disconnect()

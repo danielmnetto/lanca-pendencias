@@ -3,33 +3,37 @@ import React from 'react'
 import Nav from '../components/Nav'
 import { useRouter } from 'next/router'
 import { UserProvider } from '../components/contexts/UserContext'
-
-export function getServerSideProps (context) {
-  const token = context.req.headers.cookies
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-
-  return {
-    props: {}
-  }
-}
+import Cookies from 'js-cookie'
 
 export default function MyApp({ Component, pageProps }) {
-  const { asPath } = useRouter()
+  const route = useRouter()
 
-  const loadNav = asPath !== '/' && asPath !== '/cadastrar'
+  const [loading, setLoading] = React.useState(true)
+
+  const isNotSignInUpPaths = route.asPath !== '/' && route.asPath !== '/cadastrar'
+
+  React.useEffect(() => {
+    const token = Cookies.get('lp._token')
+
+    if (!token && isNotSignInUpPaths) {
+      route.replace('/')
+    }
+
+    setLoading(false)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className='container'>
+        <h1>Carregando...</h1>
+      </div>
+    )
+  }
 
   return (
     <UserProvider>
       <div>
-        {loadNav && <Nav />}
+        {isNotSignInUpPaths && <Nav />}
         <Component {...pageProps} />
       </div>
     </UserProvider>
