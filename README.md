@@ -35,9 +35,9 @@ Lança Pendências é um projeto de sistema de controle de lançamento de pendê
 
 ## Instalação e configuração
 
-Para a instalação, será utilizando o gerenciador de pacotes do Node (`npm`). Então certifique que o [NodeJS](https://nodejs.org/en/) e o `npm` esteja instalado no seu computador.
+Para a instalação dos pacotes dependentes do projeto, será utilizado o gerenciador de pacotes do Node (`npm`). Então certifique que o [NodeJS](https://nodejs.org/en/) e o `npm` esteja instalado no seu computador.
 
-Certifique-se também que o sistema de gerenciamento de banco de dados MySQL esteja instalado na sua máquina, pois o projeto utiliza ele para armazenar os dados do aplicativo.
+Certifique também que o sistema de gerenciamento de banco de dados MySQL esteja instalado na sua máquina, pois o projeto utiliza ele para armazenar os dados do aplicativo.
 
 * Ao clonar o repositório do projeto no seu computador, instale os pacotes necessários utilizando `npm` no Terminal/Prompt de Comando:
 ```
@@ -45,8 +45,13 @@ npm install
 ```
 
 * Configure as informações do seu banco de dados para que a aplicação a utilize alterando o arquivo `.env` e salvando logo em seguida. As instruções de alteração estão no próprio arquivo.
+* Depois que configurar, crie o banco de dados da aplicação digitando o seguinte comando no Terminal/Prompt de Comando:
+```
+npx prisma db push
+```
+Depois deste comando, o banco de dados e suas tabelas serão gerados automaticamente.
 
-* Por fim, ative aplicação rodando o seguinte comando:
+* Por fim, ative a aplicação rodando o seguinte comando:
 ```
 npm run dev
 ```
