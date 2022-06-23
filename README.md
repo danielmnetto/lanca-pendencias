@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lança-Pendências
 
-## Getting Started
+Lança Pendências é um projeto de sistema de controle de lançamento de pendências desenvolvido para plataformas Web.
 
-First, run the development server:
+## Ferramentas utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Framework
+<div>
+  <a href='https://reactjs.org'><img src="https://img.shields.io/badge/React-3d85c6?style=for-the-badge&logo=react&logoColor=white" /></a>
+  <a href='https://nextjs.org'><img src="https://img.shields.io/badge/Next.JS-000000?style=for-the-badge&logo=next.js&logoColor=white" /></a>
+</div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Banco de dados
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+<div>
+  <a href='https://www.mysql.com'><img src="https://img.shields.io/badge/MySQL-cfe2f3?style=for-the-badge&logo=mysql&logoColor=073763" /></a>
+</div>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Outras ferramentas
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<a href='https://www.prisma.io'><img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" /></a>
+<a href='https://nodejs.org/en/'><img src="https://img.shields.io/badge/Node.JS-38761d?style=for-the-badge&logo=node.js&logoColor=white" /></a>
+<a href='https://jwt.io'><img src="https://img.shields.io/badge/JSON_Web_Token-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" /></a>
 
-## Learn More
+## Funcionalidades
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* Sistema de cadastro de usuários: Faça cadastros para utilizar suas credenciais no sistema.
+* Sistema de controle de pendências: visualize, armazene, modifique ou exclua registros de pendência.
+* Sistema de autenticação
+  * O sistema de login utiliza 
+  * Usuários não 'logados' no sistema são redirecionados para a tela de login.
+* Fullstack
+  * A interface de usuário e as APIs gerenciados pelo lado do servidor trabalham juntos graças aos frameworks ***React*** e ***NextJS*** que disponibilizam ferramentas úteis para trabalhar com ambos os lados do sistema para as plataformas Web.
+  * O banco de dados é gerenciado pela biblioteca ***Prisma*** onde todas as ações de CRUD são realizadas pelos componentes dela.
