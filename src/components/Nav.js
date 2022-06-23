@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from 'next/router'
 
@@ -11,6 +12,7 @@ export default function Nav () {
 
   function goToLogin() {
     if (confirm('Tem certeza que deseja sair de sua sessão?')) {
+      Cookies.remove('lp._token')
       route.push('/')
     }
   }

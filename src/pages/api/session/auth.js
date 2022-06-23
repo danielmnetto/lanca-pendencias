@@ -29,11 +29,14 @@ export default async function Auth(req, res) {
         id: usuarioQuery.id,
         nome: usuarioQuery.nome,
         usuario: usuarioQuery.usuario
-      }, JWT_KEY, { expiresIn: '10m'})
+      }, JWT_KEY)
 
-      Cookies.set('token', token)
-
-      return res.status(200).json(token)
+      return res.status(200).json({
+        token,
+        id: usuarioQuery.id,
+        nome: usuarioQuery.nome,
+        usuario: usuarioQuery.usuario
+      })
     }
 
     return res.status(401).json(null)

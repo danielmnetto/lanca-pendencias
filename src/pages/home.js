@@ -1,10 +1,31 @@
 import React from "react"
 import moment from "moment"
 import { useRouter } from "next/router"
+import { AuthContext } from "../contexts/AuthContext"
+import Cookies from "js-cookie"
+
+export function getServerSideProps (ctx) {
+  const { ["lp._token"]: token } = ctx.req.cookies
+  
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
 
 export default function Home() {
 
   const route = useRouter()
+
+  const { usuario } = React.useContext(AuthContext)
 
   const [listaPendencias, setListaPendencias] = React.useState([])
 
@@ -46,21 +67,20 @@ export default function Home() {
       .then((res) => res.json())
       .then((res) => {
         try {
-          console.log(res)
-        res.forEach(pendencia => {
-          let prazo = pendencia.prazo
-          let data = pendencia.data
-          let horario = pendencia.horario
+          res.forEach(pendencia => {
+            let prazo = pendencia.prazo
+            let data = pendencia.data
+            let horario = pendencia.horario
 
-          let _prazo = moment.utc(prazo).format('DD/MM/YYYY')
-          let _data = moment.utc(data).format('DD/MM/YYYY')
-          let _horario = moment.utc(horario).format('HH:mm')
+            let _prazo = moment.utc(prazo).format('DD/MM/YYYY')
+            let _data = moment.utc(data).format('DD/MM/YYYY')
+            let _horario = moment.utc(horario).format('HH:mm')
 
-          pendencia.prazo = _prazo
-          pendencia.data = _data
-          pendencia.horario = _horario
-        });
-        setListaPendencias(res)
+            pendencia.prazo = _prazo
+            pendencia.data = _data
+            pendencia.horario = _horario
+          });
+          setListaPendencias(res)
         } catch (e) {
           setListaPendencias([])
           alert('Ocorreu um erro ao carregar as informações. Atualize a página mais tarde.')
@@ -68,12 +88,23 @@ export default function Home() {
       })
     }
 
+    // Autentica token
+    function tokenAuth() {
+      const token = Cookies.get('lp._token')
+      fetch('/api/session/token', { method: 'POST' })
+        .then((r) => {
+          if (r.status === 401 || r.status === 500) {
+            route.replace('/')
+          }
+        })
+    }
+    tokenAuth()
     loadPendencias()
   }, [])
 
   return (
     <div className="container">
-      <h1>Olá, fulano.</h1>
+      <h1>Olá, {usuario?.nome}.</h1>
       <div className="listaPendencias">
         <div className="home-add">
           <input 
@@ -97,8 +128,8 @@ export default function Home() {
           </thead>
 
           {listaPendencias.length > 0 && <tbody>
-            {listaPendencias.map((pendencia) => (
-              <tr>
+            {listaPendencias.map((pendencia, index) => (
+              <tr key={`r_${index}`}>
                 <td>{pendencia.id}</td>
                 <td>{pendencia.descricao}</td>
                 <td>{pendencia.prazo}</td>
