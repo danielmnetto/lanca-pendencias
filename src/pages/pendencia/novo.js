@@ -1,20 +1,22 @@
-import moment from 'moment-timezone'
 import React from 'react'
 import Title from '../../components/Title'
+import { useRouter } from 'next/router'
+import { UserContext } from '../../components/contexts/UserContext'
 
 function NovaPendencia () {
+
+  const route = useRouter()
+
+  const { usuario } = React.useContext(UserContext)
 
   const [descricao, setDescricao] = React.useState('')
   const [prazo, setPrazo] = React.useState('')
   const [data, setData] = React.useState('')
   const [horario, setHorario] = React.useState('')
   const [responsavel, setResponsavel] = React.useState('')
-
   const [usuarios, setUsuarios] = React.useState([])
 
   function submitForm () {
-    console.log(descricao, prazo, data, horario, responsavel)
-
     let message = null
     if (!responsavel) message = "Insira um responsável."
     if (horario === "") message = "Insira um horário."
@@ -38,11 +40,12 @@ function NovaPendencia () {
         data,
         horario,
         responsavelId: Number.parseInt(responsavel),
-        autorId: Number.parseInt('1')
+        autorId: Number.parseInt(usuario.id)
       })
     }).then((res) => {
       if (res.status === 201) {
-        alert('Sucesso!')
+        alert('A pendência foi criada com sucesso.')
+        route.replace('/home')
       } else {
         alert('Deu errado!')
       }

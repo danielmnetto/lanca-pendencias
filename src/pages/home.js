@@ -1,31 +1,13 @@
 import React from "react"
-import moment from "moment"
 import { useRouter } from "next/router"
-import { AuthContext } from "../contexts/AuthContext"
-import Cookies from "js-cookie"
-
-export function getServerSideProps (ctx) {
-  const { ["lp._token"]: token } = ctx.req.cookies
-  
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-
-  return {
-    props: {}
-  }
-}
+import { UserContext } from "../components/contexts/UserContext"
+import moment from "moment"
 
 export default function Home() {
 
   const route = useRouter()
 
-  const { usuario } = React.useContext(AuthContext)
+  const { usuario } = React.useContext(UserContext)
 
   const [listaPendencias, setListaPendencias] = React.useState([])
 
@@ -35,7 +17,14 @@ export default function Home() {
    */
   function deletePedencia (id) {
     if (confirm('Tem certeza que deseja excluir esta pendência? Essa ação não poderá ser desfeita!')) {
-      alert('Excluído com sucesso!')
+      fetch(`/api/pendencias/${id}`, { method: 'DELETE' })
+        .then((r) => {
+          if (r.status === 200) {
+            alert('Pendência excluída com sucesso!')
+          } else {
+            alert('Ocorreu um erro ao excluir a pendência.')
+          }
+        })
     }
   }
 
@@ -53,54 +42,43 @@ export default function Home() {
     route.push('/pendencia/editar')
   }
 
-  /**
-   * Redireciona para a página de detalhes sobre uma pendência
-   * @param {number} id ID da pendência
-   */
-  function goToPendencia (id) {
-    route.push(`/pendencia/${id}`)
-  }
-
   React.useEffect(() => {
-    function loadPendencias () {
-      fetch('/api/pendencias/1', { method: 'GET' })
-      .then((res) => res.json())
-      .then((res) => {
-        try {
+    async function loadPendencias () {
+      try {
+        // fetch(`/api/pendencias/${usuario.id}`, { method: 'GET' })
+        //   .then(res => res.json())
+        //   .then(res => {
+        //     res.forEach(pendencia => {
+        //       pendencia.prazo = moment.utc(pendencia.prazo).format('DD/MM/YYYY')
+        //       pendencia.data = moment.utc(pendencia.data).format('DD/MM/YYYY')
+        //       pendencia.horario = moment.utc(pendencia.horario).format('HH:mm')
+        //     })
+            
+        //     setListaPendencias(res)
+        //   })
+        // }
+
+        const req = await fetch(`/api/pendencias/${usuario.id}`, { method: 'GET' })
+
+        if (req.ok) {
+          const res = await req.json()
           res.forEach(pendencia => {
-            let prazo = pendencia.prazo
-            let data = pendencia.data
-            let horario = pendencia.horario
-
-            let _prazo = moment.utc(prazo).format('DD/MM/YYYY')
-            let _data = moment.utc(data).format('DD/MM/YYYY')
-            let _horario = moment.utc(horario).format('HH:mm')
-
-            pendencia.prazo = _prazo
-            pendencia.data = _data
-            pendencia.horario = _horario
-          });
+            pendencia.prazo = moment.utc(pendencia.prazo).format('DD/MM/YYYY')
+            pendencia.data = moment.utc(pendencia.data).format('DD/MM/YYYY')
+            pendencia.horario = moment.utc(pendencia.horario).format('HH:mm')
+          })
+          
           setListaPendencias(res)
-        } catch (e) {
-          setListaPendencias([])
-          alert('Ocorreu um erro ao carregar as informações. Atualize a página mais tarde.')
         }
-      })
+    
+        
+      } catch (error) {
+        console.log(error)
+      }
     }
-
-    // Autentica token
-    function tokenAuth() {
-      const token = Cookies.get('lp._token')
-      fetch('/api/session/token', { method: 'POST' })
-        .then((r) => {
-          if (r.status === 401 || r.status === 500) {
-            route.replace('/')
-          }
-        })
-    }
-    tokenAuth()
+    
     loadPendencias()
-  }, [])
+  }, [usuario])
 
   return (
     <div className="container">
@@ -123,6 +101,7 @@ export default function Home() {
               <th>Data</th>
               <th>Horário</th>
               <th>Responsável</th>
+              <th>Autor</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -136,28 +115,22 @@ export default function Home() {
                 <td>{pendencia.data}</td>
                 <td>{pendencia.horario}</td>
                 <td>{pendencia.responsavel.nome}</td>
+                <td>{pendencia.autor.nome}</td>
                 <td>
-                  <div className="action-buttons">
-
-                  </div>
-                  {/* <input 
-                    className="details" 
-                    type='button' 
-                    value='Detalhes' 
-                    onClick={() => goToPendencia(1)} 
-                    /> */}
-                  <input 
-                    className="edit" 
-                    type='button' 
-                    value='Editar' 
-                    onClick={() => editPendencia()} 
-                    />
-                  <input 
-                    className="delete" 
-                    type='button' 
-                    value='Excluir' 
-                    onClick={() => deletePedencia(1)} 
-                  />
+                  {usuario.id === pendencia.autor.id && <div className="action-buttons">
+                    <input 
+                      className="edit" 
+                      type='button' 
+                      value='Editar' 
+                      onClick={() => editPendencia()} 
+                      />
+                    <input 
+                      className="delete" 
+                      type='button' 
+                      value='Excluir' 
+                      onClick={() => deletePedencia(pendencia.id)} 
+                      />
+                  </div>}
                 </td>
               </tr>
             ))}

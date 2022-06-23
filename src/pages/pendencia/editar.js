@@ -9,28 +9,40 @@ export default function NovaPendencia () {
   const [horario, setHorario] = React.useState('')
   const [responsavel, setResponsavel] = React.useState('')
 
-  async function submitForm () {
-    const request = await fetch('/api/pendencia', {
+  function submitForm () {
+
+    let message = null
+    if (!responsavel) message = "Insira um responsável."
+    if (horario === "") message = "Insira um horário."
+    if (data === "") message = "Insira uma data."
+    if (prazo === "") message = "Insira um prazo."
+    if (descricao === "") message = "Insira uma descrição."
+
+    if (message !== null) {
+      alert(message)
+      return
+    }
+
+    fetch('/api/pendencias', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         descricao,
         prazo,
         data,
         horario,
-        responsavel
+        responsavelId: Number.parseInt(responsavel),
+        autorId: Number.parseInt('1')
+      })
+    }).then((res) => {
+      if (res.status === 201) {
+        alert('Sucesso!')
+      } else {
+        alert('Deu errado!')
       }
     })
-
-    const response = request.status
-
-    if (response === 200) {
-      alert('Sucesso!')
-    } else {
-      alert('Algo deu errado!' + response)
-    }
   }
 
   return (

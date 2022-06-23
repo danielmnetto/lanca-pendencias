@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -14,21 +13,17 @@ export default function Token(req, res) {
     if (req.method !== 'POST') return res.status(405).json(null)
     if (!req.body) return res.status(400).json(null)
 
-    const token = Cookies.get('lp._token')
+    const { token } = req.body
 
     jwt.verify(token, JWT_KEY, function(error, decoded) {
       if (error) {
-        console.log(error)
-        return res.status(500).json(null)
-      } else if (decoded !== undefined) {
-        return res.status(200).json(decoded)
-      } else {
+        console.log(error.message)
         return res.status(401).json(null)
       }
+
+      return res.status(200).json(decoded)
     })
-    
   } catch (error) {
-    console.log(error.message)
-    return res.status(403).json(null)
+    return res.status(500).json(null)
   }
 }
