@@ -32,3 +32,26 @@ Lança Pendências é um projeto de sistema de controle de lançamento de pendê
 * Fullstack
   * A interface de usuário e as APIs gerenciados pelo lado do servidor trabalham juntos graças aos frameworks ***React*** e ***NextJS*** que disponibilizam ferramentas úteis para trabalhar com ambos os lados do sistema para as plataformas Web.
   * O banco de dados é gerenciado pela biblioteca ***Prisma*** onde todas as ações de CRUD são realizadas pelos componentes dela.
+
+## Instalação e configuração
+
+O projeto depende do NodeJS. Então certifique que o [NodeJS](https://nodejs.org/en/) e o gerenciador de pacotes do Node (`npm`) esteja instalado no seu computador.
+
+Certifique-se também que o sistema de gerenciamento de banco de dados MySQL esteja instalado na sua máquina, pois o projeto utiliza ele para armazenar os dados do aplicativo.
+
+* Ao clonar o repositório do projeto no seu computador, instale os pacotes necessários utilizando `npm` no Terminal/Prompt de Comando:
+```
+npm install
+```
+
+* Configure as informações do seu banco de dados para que a aplicação a utilize alterando o arquivo `.env` e salvando logo em seguida. As instruções de alteração estão no próprio arquivo.
+
+* Por fim, ative aplicação rodando o seguinte comando:
+```
+npm run dev
+```
+
+Para acessar a aplicação pelo navegador, acesse a URL da aplicação mencionada pelo Terminal/Prompt de comando, geralmente na linha que possui os dizeres:
+```
+ready - started server on 0.0.0.0:3000, url: http://localhost:3000
+```
