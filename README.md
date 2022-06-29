@@ -37,7 +37,7 @@ Lança Pendências é um projeto de sistema de controle de lançamento de pendê
 
 Para a instalação dos pacotes dependentes do projeto, será utilizado o gerenciador de pacotes do Node (`npm`). Então certifique que o [NodeJS](https://nodejs.org/en/) e o `npm` esteja instalado no seu computador.
 
-Certifique também que o sistema de gerenciamento de banco de dados MySQL esteja instalado na sua máquina, pois o projeto utiliza ele para armazenar os dados do aplicativo.
+Certifique também que o sistema de gerenciamento de banco de dados MySQL esteja instalado na sua máquina, pois o projeto utiliza ele para armazenar os dados solicitados pelo back-end do aplicativo.
 
 * Ao clonar o repositório do projeto no seu computador, instale os pacotes necessários utilizando `npm` no Terminal/Prompt de Comando:
 ```
